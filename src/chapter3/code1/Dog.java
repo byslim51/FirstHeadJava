@@ -1,4 +1,4 @@
-package code1;
+package chapter3.code1;
 
 public class Dog {
     String name;
