@@ -1,4 +1,4 @@
-package task1.taskB;
+package chapter4.task1.taskB;
 
 public class ClockTestDrive {
     public static void main(String[] args) {

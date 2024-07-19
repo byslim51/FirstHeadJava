@@ -1,4 +1,4 @@
-package task1.taskA;
+package chapter4.task1.taskA;
 
 public class xCopy {
     public static void main(String[] args) {
