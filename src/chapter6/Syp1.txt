@@ -1,4 +1,4 @@
-164 страница
+164 страница.
 
 String[] myList = new String[2];
 
