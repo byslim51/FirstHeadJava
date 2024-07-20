@@ -1,0 +1,24 @@
+164 страница
+
+String[] myList = new String[2];
+
+String a = new String("Ура");
+myList[0] = a;
+
+String b = new String("Лягушка");
+myList[1] = b;
+
+int theSize = myList.length;
+
+Object o = myList[1];
+
+myList[1] = null;
+
+boolean isIn = false;
+for (String arrayElement : myList){
+if (arrayElement == b){
+  isIn = true
+  } else {
+  isIn = false;
+  }
+}
