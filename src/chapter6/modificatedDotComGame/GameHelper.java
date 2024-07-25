@@ -11,6 +11,18 @@ public class GameHelper {
     private final int[] grid = new int[gridSize];
     private int comCount = 0;
 
+    public String getAlphabet() {
+        return alphabet;
+    }
+
+    public int getGridSize() {
+        return gridSize;
+    }
+
+    public int getGridLength() {
+        return gridLength;
+    }
+
     public String getUserInput(String prompt) {
         String inputLine = null;
         System.out.println(prompt + " ");
@@ -41,9 +53,9 @@ public class GameHelper {
         }
         while (!success & attempts++ < 200) {
             location = (int) (Math.random() * gridSize);
-            //System.out.print("пробуем" + location);
             int x = 0;
             success = true;
+
             while (success && x < comSize) {
                 if (grid[location] == 0) {
                     coords[x++] = location;
@@ -51,12 +63,10 @@ public class GameHelper {
                     if (location >= gridSize) {
                         success = false;
                     }
-                    if (x > 0 && ((location & gridLength) == 0)) {
+                    if (x > 0 && (location % gridLength == 0)) {
                         success = false;
                     }
-
                 } else {
-//           System.out.print ("acпoлsyercs" + location); success = false;
                     success = false;
                 }
             }
@@ -64,16 +74,13 @@ public class GameHelper {
         int x = 0;
         int row = 0;
         int column = 0;
-//      System.out.println("\n");
         while (x < comSize) {
             grid[coords[x]] = 1;
-            row = coords[x] / gridLength;
+            row = (int) (coords[x] / gridLength);
             column = coords[x] % gridLength;
             temp = String.valueOf(alphabet.charAt(column));
             alphaCells.add(temp.concat(Integer.toString(row)));
             x++;
-//       System.out.print(" coord "+x+"
-//       System.out.println("\n");
         }
         return alphaCells;
     }
