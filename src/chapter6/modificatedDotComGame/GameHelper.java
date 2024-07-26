@@ -10,6 +10,20 @@ public class GameHelper {
     private final int gridSize = 49;
     private final int[] grid = new int[gridSize];
     private int comCount = 0;
+//    private final List<String> validMoves = new ArrayList<>();
+
+//    public List<String> getValidMoves () {
+//        return validMoves;
+//    }
+
+
+//    public void insertionOfMoves(){
+//        for (int i = 0; i < gridSize / gridLength; i++) {
+//            for (int j = 0; j < gridLength ; j++) {
+//                validMoves.add("" + getAlphabet().charAt(i) + j);
+//            }
+//        }
+//    }
 
     public String getAlphabet() {
         return alphabet;

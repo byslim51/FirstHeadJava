@@ -2,14 +2,24 @@ package chapter6.modificatedDotComGame;
 
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class DotComBust {
     //   Объявляем и инициализируем переменные которые нам понадобятся
     private final DotCom dotCom = new DotCom();
-    private final GameHelper helper = new GameHelper();
+    private static final GameHelper helper = new GameHelper();
     private final ArrayList<DotCom> dotComsList = new ArrayList<>();
     private int numOfGuesses = 0;
     String result = "Мимо"; // Подразумеваем промах, пока не изменился результат
+    List<String> validMoves = new ArrayList<>();
+
+    public void insertionOfMoves(){
+        for (int i = 0; i < helper.getGridSize() / helper.getGridLength(); i++) {
+            for (int j = 0; j < helper.getGridLength() ; j++) {
+                validMoves.add("" + helper.getAlphabet().charAt(i) + j);
+            }
+        }
+    }
 
     private void setUpGame() {
 //        Создадим 3 сайта, присвоим им имена и добавим в ArrayList
@@ -46,18 +56,26 @@ public class DotComBust {
     private void startPlaying() {
         while (!dotComsList.isEmpty()) { // До тех пор пока список объектов DotCom не станет пустым
             String userGuess = helper.getUserInput("Сделайте ход:"); // Получаем пользовательский ввод
-            dotCom.clearConsole();
-            checkUserGuess(userGuess); // Вызываем наш метод checkUserGuess
+                dotCom.clearConsole();
+                checkUserGuess(userGuess); // Вызываем наш метод checkUserGuess
         }
-        finishGame(); // Вызываем метод finishGame
+            finishGame(); // Вызываем метод finishGame
     }
 
     private void checkUserGuess(String userGuess) {
         numOfGuesses++; // Инкрементируем количество попыток которые сделал пользователь
-
+        insertionOfMoves();
 
         for (DotCom dotComToTest : dotComsList) { // Повторяем это для всех объектов dotCom в списке
+            if (!validMoves.contains(userGuess)) {
+                numOfGuesses--;
+                dotCom.checkYourself("Вы ввели что то неправильное.");
+                result = "Вы ввели что то неправильное.";
+                break;
+            }
+
             result = dotComToTest.checkYourself(userGuess); // Просим DotCom проверить ход пользователя
+
             if (result.equals("Попал")) {
                 break; // Преднамеренно заканчиваем цикл
             }
@@ -69,10 +87,14 @@ public class DotComBust {
                 numOfGuesses--;
                 break;
             }
+            if (result.equals("Вы ввели что то неправильное.")){
+                numOfGuesses--;
+                break;
+            }
 
         }
         if (!result.equals("Потопил"))
-        System.out.println(result);
+            System.out.println(result);
 
     }
 
@@ -80,7 +102,7 @@ public class DotComBust {
 //        Выводим сообщение о том как пользователь прошел игру (Статистику)
         System.out.println("Все сайты ушли ко дну! Ваши акции теперь ничего не стоят.");
         if (numOfGuesses <= 18) {
-            System.out.println("Это заняло у вас " + numOfGuesses + "попыток.");
+            System.out.println("Это заняло у вас " + numOfGuesses + " попыток.");
             System.out.println("Вы успели выбраться до того, как ваши вложения утонули");
         } else {
             System.out.println("Это заняло у вас много времени. " + numOfGuesses + "попыток.");
