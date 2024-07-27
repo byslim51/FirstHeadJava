@@ -1,6 +1,5 @@
 package chapter6.modificatedDotComGame;
 
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,10 +11,30 @@ public class DotComBust {
     private int numOfGuesses = 0;
     String result = "Мимо"; // Подразумеваем промах, пока не изменился результат
     List<String> validMoves = new ArrayList<>();
+    List<String> pastMoves = new ArrayList<>();
 
-    public void insertionOfMoves(){
+    public void clearConsoleAndtableChange() {
+        String[][] newTable = new String[helper.getGridSize() / helper.getGridLength()][helper.getGridLength() + 1];
+        for (int i = 0; i < 20; i++) {
+            System.out.println();
+        }
+        for (int j = 0; j < newTable.length; j++) {
+            for (int i = 0; i < newTable[j].length; i++) {
+                if (pastMoves.contains(helper.getAlphabet().charAt(j) + Integer.toString(i))){
+                    System.out.print("-- ");
+                } else {
+                    System.out.print("" + helper.getAlphabet().charAt(j) + i + " ");
+                }
+            }
+            System.out.println();
+        }
+        System.out.println();
+    }
+
+
+    public void insertionOfMoves() {
         for (int i = 0; i < helper.getGridSize() / helper.getGridLength(); i++) {
-            for (int j = 0; j < helper.getGridLength() ; j++) {
+            for (int j = 0; j <= helper.getGridLength(); j++) {
                 validMoves.add("" + helper.getAlphabet().charAt(i) + j);
             }
         }
@@ -39,7 +58,7 @@ public class DotComBust {
 //        System.out.println("Можно использовать ходы от 0 до " + helper.getGridSize() + "(A1, A2, A3...), количество строк: " + helper.getGridLength());
         System.out.println("Попытайтесь потопить из за минимальное количество ходов");
         System.out.println("Укажите одну из указанных ячеек:");
-        for (int j = 0; j <  helper.getGridLength(); j++) {
+        for (int j = 0; j < helper.getGridLength(); j++) {
             for (int i = 0; i <= helper.getGridSize() / helper.getGridLength(); i++) {
                 System.out.print("" + helper.getAlphabet().charAt(j) + i + " ");
             }
@@ -56,10 +75,11 @@ public class DotComBust {
     private void startPlaying() {
         while (!dotComsList.isEmpty()) { // До тех пор пока список объектов DotCom не станет пустым
             String userGuess = helper.getUserInput("Сделайте ход:"); // Получаем пользовательский ввод
-                dotCom.clearConsole();
-                checkUserGuess(userGuess); // Вызываем наш метод checkUserGuess
+            pastMoves.add(userGuess);
+            clearConsoleAndtableChange();
+            checkUserGuess(userGuess); // Вызываем наш метод checkUserGuess
         }
-            finishGame(); // Вызываем метод finishGame
+        finishGame(); // Вызываем метод finishGame
     }
 
     private void checkUserGuess(String userGuess) {
@@ -83,11 +103,11 @@ public class DotComBust {
                 dotComsList.remove(dotComToTest); // Удаляем из списка потопленный сайт
                 break;
             }
-            if (result.equals("Вы уже попадали в эту ячейку")){
+            if (result.equals("Вы уже попадали в эту ячейку")) {
                 numOfGuesses--;
                 break;
             }
-            if (result.equals("Вы ввели что то неправильное.")){
+            if (result.equals("Вы ввели что то неправильное.")) {
                 numOfGuesses--;
                 break;
             }
