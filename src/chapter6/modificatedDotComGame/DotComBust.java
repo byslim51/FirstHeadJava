@@ -13,7 +13,7 @@ public class DotComBust {
     List<String> validMoves = new ArrayList<>();
     List<String> pastMoves = new ArrayList<>();
 
-    public void clearConsoleAndtableChange() {
+    public void clearConsoleAndTableChange() {
         String[][] newTable = new String[helper.getGridSize() / helper.getGridLength()][helper.getGridLength() + 1];
         for (int i = 0; i < 20; i++) {
             System.out.println();
@@ -76,7 +76,7 @@ public class DotComBust {
         while (!dotComsList.isEmpty()) { // До тех пор пока список объектов DotCom не станет пустым
             String userGuess = helper.getUserInput("Сделайте ход:"); // Получаем пользовательский ввод
             pastMoves.add(userGuess);
-            clearConsoleAndtableChange();
+            clearConsoleAndTableChange();
             checkUserGuess(userGuess); // Вызываем наш метод checkUserGuess
         }
         finishGame(); // Вызываем метод finishGame

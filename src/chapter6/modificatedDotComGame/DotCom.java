@@ -7,8 +7,6 @@ public class DotCom {
     private ArrayList<String> locationCells = new ArrayList<>();
     private String name;
     private List<String> arrayList = new ArrayList<>();
-    public final GameHelper helper = new GameHelper();
-
 
 
     public void setLocationSells(ArrayList<String> loc) {
@@ -18,22 +16,6 @@ public class DotCom {
     public void setName(String n) {
         name = n;
     }
-
-//    public void clearConsole() {
-//        DotComBust dotComBust = new DotComBust();
-//        for (int i = 0; i < 20; i++) {
-//            System.out.println();
-//        }
-//        dotComBust.tableChange();
-//
-////        for (int j = 0; j < helper.getGridLength(); j++) {
-////            for (int i = 0; i <= helper.getGridSize() / helper.getGridLength(); i++) {
-////                System.out.print("" + helper.getAlphabet().charAt(j) + i + " ");
-////            }
-////            System.out.println();
-////        }
-//        System.out.println();
-//    }
 
     public String checkYourself(String userInput) {
         String result = "Мимо";
