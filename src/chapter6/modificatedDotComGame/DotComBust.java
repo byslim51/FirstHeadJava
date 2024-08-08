@@ -5,14 +5,22 @@ import java.util.List;
 
 public class DotComBust {
     //   Объявляем и инициализируем переменные которые нам понадобятся
-    private final DotCom dotCom = new DotCom();
     private static final GameHelper helper = new GameHelper();
     private final ArrayList<DotCom> dotComsList = new ArrayList<>();
     private int numOfGuesses = 0;
+    private final List<String> moves = new ArrayList<>();
     String result = "Мимо"; // Подразумеваем промах, пока не изменился результат
     List<String> validMoves = new ArrayList<>();
     List<String> pastMoves = new ArrayList<>();
+    {
+        fillValidMoves();
+    }
 
+
+
+    /**
+     * Очистка консоли и изменение таблицы ходов
+     */
     public void clearConsoleAndTableChange() {
         String[][] newTable = new String[helper.getGridSize() / helper.getGridLength()][helper.getGridLength() + 1];
         for (int i = 0; i < 20; i++) {
@@ -20,7 +28,7 @@ public class DotComBust {
         }
         for (int j = 0; j < newTable.length; j++) {
             for (int i = 0; i < newTable[j].length; i++) {
-                if (pastMoves.contains(helper.getAlphabet().charAt(j) + Integer.toString(i))){
+                if (pastMoves.contains(helper.getAlphabet().charAt(j) + Integer.toString(i))) {
                     System.out.print("-- ");
                 } else {
                     System.out.print("" + helper.getAlphabet().charAt(j) + i + " ");
@@ -31,8 +39,10 @@ public class DotComBust {
         System.out.println();
     }
 
-
-    public void insertionOfMoves() {
+    /**
+     * Добавление доступных ходов пользователя в ArrayList validMoves
+     */
+    public void fillValidMoves() {
         for (int i = 0; i < helper.getGridSize() / helper.getGridLength(); i++) {
             for (int j = 0; j <= helper.getGridLength(); j++) {
                 validMoves.add("" + helper.getAlphabet().charAt(i) + j);
@@ -55,7 +65,6 @@ public class DotComBust {
 //       Выводим краткие инструкции для пользователя.
         System.out.println("Ваша цель - потопить три сайта:");
         System.out.println("Pets.com , eToys.com , Go2.com");
-//        System.out.println("Можно использовать ходы от 0 до " + helper.getGridSize() + "(A1, A2, A3...), количество строк: " + helper.getGridLength());
         System.out.println("Попытайтесь потопить из за минимальное количество ходов");
         System.out.println("Укажите одну из указанных ячеек:");
         for (int j = 0; j < helper.getGridLength(); j++) {
@@ -69,6 +78,8 @@ public class DotComBust {
         for (DotCom dotComToSet : dotComsList) { // Повторяем с каждым объектом DotCom в списке
             ArrayList<String> newLocation = helper.placeDotCom(3); // Запрашиваем у вспомогательного объекта местонахождение сайтов
             dotComToSet.setLocationSells(newLocation); // Вызываем сеттер, что бы передать местонахождение сайтов полученные с помощью вспомогательного объекта
+            System.out.print(dotComToSet);
+            System.out.println(newLocation);
         }
     }
 
@@ -83,39 +94,43 @@ public class DotComBust {
     }
 
     private void checkUserGuess(String userGuess) {
+
+        if (!validMoves.contains(userGuess)) {
+            System.out.println("Вы ввели что то неправильное.");
+            return;
+        }
+        if (moves.contains(userGuess)) {
+            System.out.println("Вы уже указывали эту ячейку");
+            return;
+        }
+        moves.add(userGuess);
+
         numOfGuesses++; // Инкрементируем количество попыток которые сделал пользователь
-        insertionOfMoves();
 
         for (DotCom dotComToTest : dotComsList) { // Повторяем это для всех объектов dotCom в списке
-            if (!validMoves.contains(userGuess)) {
-                numOfGuesses--;
-                dotCom.checkYourself("Вы ввели что то неправильное.");
-                result = "Вы ввели что то неправильное.";
-                break;
-            }
-
             result = dotComToTest.checkYourself(userGuess); // Просим DotCom проверить ход пользователя
 
             if (result.equals("Попал")) {
                 break; // Преднамеренно заканчиваем цикл
             }
             if (result.equals("Потопил")) {
+                System.out.println("Ой! Вы потопили " + dotComToTest);
                 dotComsList.remove(dotComToTest); // Удаляем из списка потопленный сайт
                 break;
             }
-            if (result.equals("Вы уже попадали в эту ячейку")) {
+            if (result.equals("Вы уже указывали эту ячейку")) {
                 numOfGuesses--;
                 break;
             }
-            if (result.equals("Вы ввели что то неправильное.")) {
-                numOfGuesses--;
-                break;
-            }
+//            if (result.equals("Вы ввели что то неправильное.")) {
+//                numOfGuesses--;
+//                break;
+//            }
 
         }
-        if (!result.equals("Потопил"))
+        if (!result.equals("Потопил")) {
             System.out.println(result);
-
+        }
     }
 
     private void finishGame() {
@@ -125,7 +140,7 @@ public class DotComBust {
             System.out.println("Это заняло у вас " + numOfGuesses + " попыток.");
             System.out.println("Вы успели выбраться до того, как ваши вложения утонули");
         } else {
-            System.out.println("Это заняло у вас много времени. " + numOfGuesses + "попыток.");
+            System.out.println("Это заняло у вас много времени. " + numOfGuesses + " попыток.");
             System.out.println("Рыбы водят хороводы вокруг ваших вложений");
         }
     }
